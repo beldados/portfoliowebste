@@ -122,9 +122,11 @@ export const fileSystemData: FileSystemItem = {
           type: 'file',
           content: `DANIEL DEMERW
 Software Engineer, AI Enthusiast & Creative
-Email: daniel@example.com
-GitHub: github.com/sheshbazzarr
-Location: Ethiopia
+Email: demerwdani@gmail.com
+Phone: +251967287536
+Location: Addis Ababa, Ethiopia
+GitHub: https://github.com/sheshbazzarr
+LinkedIn: https://www.linkedin.com/in/daniel-demerw/
 
 EDUCATION:
 • University of the People - Computer Science (2024-2026)

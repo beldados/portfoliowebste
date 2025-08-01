@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   User, 
   Mail, 
@@ -13,9 +13,13 @@ import {
   Code,
   Award
 } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const ResumeApp: React.FC = () => {
   const [activeSection, setActiveSection] = useState('overview');
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const resumeRef = useRef<HTMLDivElement>(null);
 
   const sections = [
     { id: 'overview', label: 'Overview', icon: <User className="w-4 h-4" /> },
@@ -27,13 +31,13 @@ const ResumeApp: React.FC = () => {
 
   const personalInfo = {
     name: 'Daniel Demerw',
-    title: 'Software Engineer, AI Enthusiast & Creative',
-    email: 'daniel@example.com',
-    phone: '+251-xxx-xxx-xxx',
+    title: 'Backend Developer, AI Enthusiast & Creative',
+    email: 'demerwdani@gmail.com',
+    phone: '+251967287536',
     location: 'Addis Ababa, Ethiopia',
-    website: 'danieldemerw.com',
-    github: 'github.com/sheshbazzarr',
-    linkedin: 'linkedin.com/in/danieldemerw',
+    website: 'https://beldados.vercel.app/',
+    github: 'https://github.com/sheshbazzarr',
+    linkedin: 'https://www.linkedin.com/in/daniel-demerw/',
     summary: `Passionate software engineer with expertise in AI/ML, full-stack development, and API design. 
     Currently pursuing multiple degrees in Computer Science and Applied AI while building innovative projects 
     that serve the Ethiopian community and beyond. Strong background in both frontend and backend development, 
@@ -48,10 +52,21 @@ const ResumeApp: React.FC = () => {
       period: '2023 - Present',
       location: 'Addis Ababa, Ethiopia',
       responsibilities: [
-        'Developed AI-powered applications including HeartSync (relationship coaching) and LifelongLearners (educational platform)',
+        {
+          text: 'Developed AI-powered applications including HeartSync (relationship coaching) and LifelongLearners (educational platform)',
+          links: [
+            { text: 'HeartSync', url: 'https://github.com/sheshbazzarr/heartsync' },
+            { text: 'LifelongLearners', url: 'https://github.com/sheshbazzarr/lifelonglearners' }
+          ]
+        },
         'Built RESTful APIs using Python/FastAPI with comprehensive documentation and multi-language support',
         'Created face recognition systems using OpenCV and machine learning techniques',
-        'Developed Ethiopian-focused platforms like JobDone (የቤት ሰራተኛ መፈለጊያ) for local job matching',
+        {
+          text: 'Developed Ethiopian-focused platforms like JobDone (የቤት ሰራተኛ መፈለጊያ) for local job matching',
+          links: [
+            { text: 'JobDone', url: 'https://github.com/sheshbazzarr/jobdone' }
+          ]
+        },
         'Collaborated with international clients on diverse AI and web development projects'
       ]
     },
@@ -61,10 +76,30 @@ const ResumeApp: React.FC = () => {
       period: '2024 - Present',
       location: 'Online & Ethiopia',
       responsibilities: [
-        'Pursuing BSc in Applied Artificial Intelligence at IU International University',
-        'Completing Software Engineering program at Holberton School',
-        'Studying Computer Science at University of the People',
-        'Completed Data Science certification at Explore AI',
+        {
+          text: 'Pursuing BSc in Applied Artificial Intelligence at IU International University',
+          links: [
+            { text: 'IU International University', url: 'https://www.iu.org/' }
+          ]
+        },
+        {
+          text: 'Completing Software Engineering program at Holberton School',
+          links: [
+            { text: 'Holberton School', url: 'https://www.holbertonschool.com/' }
+          ]
+        },
+        {
+          text: 'Studying Computer Science at University of the People',
+          links: [
+            { text: 'University of the People', url: 'https://www.uopeople.edu/' }
+          ]
+        },
+        {
+          text: 'Completed Data Science certification at Explore AI',
+          links: [
+            { text: 'Explore AI', url: 'https://www.explore.ai/' }
+          ]
+        },
         'Applied machine learning techniques to real-world problems and datasets'
       ]
     }
@@ -74,6 +109,7 @@ const ResumeApp: React.FC = () => {
     {
       degree: 'BSc Applied Artificial Intelligence',
       institution: 'IU International University',
+      institutionUrl: 'https://www.iu.org/',
       period: '2025 - 2028',
       location: 'Online',
       achievements: [
@@ -86,6 +122,7 @@ const ResumeApp: React.FC = () => {
     {
       degree: 'Bachelor of Science in Computer Science',
       institution: 'University of the People',
+      institutionUrl: 'https://www.uopeople.edu/',
       period: '2024 - 2026',
       location: 'Online',
       achievements: [
@@ -98,6 +135,7 @@ const ResumeApp: React.FC = () => {
     {
       degree: 'Software Engineering Certificate',
       institution: 'Holberton School',
+      institutionUrl: 'https://www.holbertonschool.com/',
       period: '2024 - 2025',
       location: 'Online',
       achievements: [
@@ -110,6 +148,7 @@ const ResumeApp: React.FC = () => {
     {
       degree: 'Data Science Certification',
       institution: 'Explore AI',
+      institutionUrl: 'https://www.explore.ai/',
       period: '2024',
       location: 'Online',
       achievements: [
@@ -117,6 +156,19 @@ const ResumeApp: React.FC = () => {
         'Machine learning and statistical modeling',
         'Data visualization and business intelligence',
         'Real-world project experience with industry datasets'
+      ]
+    },
+    {
+      degree: 'DSA (competitive programming)',
+      institution: 'A2SV (AFRICAN TO SILICON VALLEY)',
+      institutionUrl: 'https://a2sv.org/',
+      period: '2025',
+      location: 'Online',
+      achievements: [
+        'Mastered basic data structures',
+        'Array, stack, linked list, queue, tree, graph',
+        'Participated in internship',
+        'Solved more than 500 problems'
       ]
     }
   ];
@@ -130,11 +182,13 @@ const ResumeApp: React.FC = () => {
       { name: 'SQL', level: 80 }
     ],
     'AI/ML Technologies': [
-      { name: 'TensorFlow', level: 80 },
       { name: 'PyTorch', level: 75 },
       { name: 'OpenCV', level: 85 },
       { name: 'Scikit-learn', level: 85 },
-      { name: 'NLP', level: 80 }
+      { name: 'NLP', level: 80 },
+      { name: 'Hugging Face Transformers', level: 80 },
+      { name: 'LangChain', level: 75 },
+      { name: 'spaCy', level: 80 }
     ],
     'Frontend Technologies': [
       { name: 'React', level: 85 },
@@ -146,6 +200,7 @@ const ResumeApp: React.FC = () => {
     'Backend Technologies': [
       { name: 'FastAPI', level: 90 },
       { name: 'Flask', level: 85 },
+      { name: 'Django', level: 80 },
       { name: 'Node.js', level: 80 },
       { name: 'Express.js', level: 75 },
       { name: 'REST APIs', level: 90 }
@@ -164,6 +219,7 @@ const ResumeApp: React.FC = () => {
       name: 'EthiopicBible API',
       description: 'Comprehensive REST API for the Ethiopic Bible with multi-language support',
       technologies: ['Python', 'FastAPI', 'MongoDB', 'Redis', 'PostgreSQL'],
+      githubUrl: 'https://github.com/sheshbazzarr/EthiopicBibleAPI',
       achievements: [
         'Supports multiple languages including Amharic',
         'High-performance API with comprehensive documentation',
@@ -175,6 +231,7 @@ const ResumeApp: React.FC = () => {
       name: 'LifelongLearners Platform',
       description: 'AI-powered educational platform with personalized learning recommendations',
       technologies: ['React', 'Node.js', 'AI/ML', 'PostgreSQL', 'TypeScript'],
+      githubUrl: 'https://github.com/sheshbazzarr/LifelongLearners',
       achievements: [
         'Curated learning paths tailored to user interests',
         'AI-powered recommendations based on learning style',
@@ -186,6 +243,7 @@ const ResumeApp: React.FC = () => {
       name: 'HeartSync - AI Relationship Coach',
       description: 'Relationship coaching app with emotional intelligence and AI suggestions',
       technologies: ['TypeScript', 'React', 'AI/ML', 'Node.js', 'Tailwind CSS'],
+      githubUrl: 'https://github.com/sheshbazzarr/HeartSync',
       achievements: [
         'Real-time AI suggestions with emotional intelligence',
         'Date planning and gift recommendation features',
@@ -194,17 +252,162 @@ const ResumeApp: React.FC = () => {
       ]
     },
     {
+      name: 'JobDone Platform',
+      description: 'Ethiopian domestic worker platform (የቤት ሰራተኛ መፈለጊያ) for local job matching',
+      technologies: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Tailwind CSS'],
+      githubUrl: 'https://github.com/sheshbazzarr/linkdone',
+      achievements: [
+        'Local job matching platform for Ethiopian workers',
+        'User-friendly interface with Amharic support',
+        'Secure payment and verification system',
+        'Community-driven platform for domestic services'
+      ]
+    },
+    {
       name: 'Face Recognition System',
       description: 'Machine learning-powered face recognition with web interface',
       technologies: ['Python', 'OpenCV', 'Flask', 'HTML', 'CSS', 'Bootstrap'],
+      githubUrl: 'https://github.com/sheshbazzarr/FaceRecognition',
       achievements: [
         'Custom ML model training and deployment',
         'Flask-based web application with responsive design',
         'Integrated computer vision with user-friendly interface',
         'Cloud deployment for easy access'
       ]
+    },
+    {
+      name: 'Temsalet',
+      description: 'An app that aims to preserve and promote the rich tradition of Ethiopia through proverbs',
+      technologies: ['React Native', 'Node.js', 'MongoDB', 'Express.js', 'AI/ML'],
+      githubUrl: 'https://github.com/sheshbazzarr/temsalet',
+      achievements: [
+        'Proverb of the Day: Each day, a new proverb is featured with meaning and origin',
+        'Search functionality for specific proverbs or topics',
+        'Save and Share: Users can save favorite proverbs and share them',
+        'Language Support: The app supports both English and Amharic languages'
+      ]
     }
   ];
+
+  const generatePDF = async () => {
+    setIsGeneratingPDF(true);
+    
+    try {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 20;
+      const contentWidth = pageWidth - (2 * margin);
+      let yPosition = margin;
+      
+      // Helper function to add text with word wrapping
+      const addText = (text: string, fontSize: number, isBold: boolean = false, color: string = '#000000') => {
+        pdf.setFontSize(fontSize);
+        pdf.setTextColor(color);
+        if (isBold) {
+          pdf.setFont('helvetica', 'bold');
+        } else {
+          pdf.setFont('helvetica', 'normal');
+        }
+        
+        const lines = pdf.splitTextToSize(text, contentWidth);
+        if (yPosition + (lines.length * fontSize * 0.4) > pageHeight - margin) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        
+        pdf.text(lines, margin, yPosition);
+        yPosition += lines.length * fontSize * 0.4 + 2;
+      };
+      
+      // Helper function to add section header
+      const addSectionHeader = (title: string) => {
+        addText(title, 16, true, '#1e40af');
+        yPosition += 5;
+      };
+      
+      // Page 1: Header and Overview
+      addText('DANIEL DEMERW', 24, true, '#1e40af');
+      addText('Software Engineer, AI Enthusiast & Creative', 14, true);
+      yPosition += 5;
+      
+      // Contact Information
+      addText('Email: demerwdani@gmail.com', 10);
+      addText('Phone: +251967287536', 10);
+      addText('Location: Addis Ababa, Ethiopia', 10);
+      addText('GitHub: https://github.com/sheshbazzarr', 10);
+      addText('LinkedIn: https://www.linkedin.com/in/daniel-demerw/', 10);
+      yPosition += 8;
+      
+      // Professional Summary
+      addSectionHeader('PROFESSIONAL SUMMARY');
+      addText(personalInfo.summary, 10);
+      yPosition += 8;
+      
+      // Experience
+      addSectionHeader('EXPERIENCE');
+      
+      experience.forEach(job => {
+        addText(job.title, 12, true);
+        addText(`${job.company} | ${job.period} | ${job.location}`, 10, false, '#6b7280');
+        yPosition += 3;
+        
+        job.responsibilities.forEach(responsibility => {
+          const text = typeof responsibility === 'string' ? responsibility : responsibility.text;
+          addText(`• ${text}`, 10);
+        });
+        yPosition += 5;
+      });
+      
+      // Education
+      addSectionHeader('EDUCATION');
+      
+      education.forEach(edu => {
+        addText(edu.degree, 12, true);
+        addText(`${edu.institution} | ${edu.period} | ${edu.location}`, 10, false, '#6b7280');
+        yPosition += 3;
+        
+        edu.achievements.forEach(achievement => {
+          addText(`• ${achievement}`, 10);
+        });
+        yPosition += 5;
+      });
+      
+      // Skills
+      addSectionHeader('SKILLS');
+      
+      Object.entries(skills).forEach(([category, skillList]) => {
+        addText(category, 11, true);
+        const skillNames = skillList.map(skill => skill.name).join(' • ');
+        addText(skillNames, 10);
+        yPosition += 3;
+      });
+      
+      // Projects
+      addSectionHeader('PROJECTS');
+      
+      projects.forEach(project => {
+        addText(project.name, 12, true);
+        addText(project.description, 10);
+        addText(`Technologies: ${project.technologies.join(', ')}`, 10, false, '#6b7280');
+        yPosition += 3;
+        
+        project.achievements.forEach(achievement => {
+          addText(`• ${achievement}`, 10);
+        });
+        yPosition += 5;
+      });
+      
+      // Download the PDF
+      pdf.save('Daniel_Demerw_Resume.pdf');
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Error generating PDF. Please try again.');
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
 
   const renderOverview = () => (
     <div className="space-y-6">
@@ -226,15 +429,21 @@ const ResumeApp: React.FC = () => {
           </div>
           <div className="flex items-center space-x-2">
             <Globe className="w-4 h-4" />
-            <span>{personalInfo.website}</span>
+            <a href={personalInfo.website} target="_blank" rel="noopener noreferrer" className="hover:text-blue-200 underline">
+              {personalInfo.website}
+            </a>
           </div>
           <div className="flex items-center space-x-2">
             <Github className="w-4 h-4" />
-            <span>{personalInfo.github}</span>
+            <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="hover:text-blue-200 underline">
+              {personalInfo.github}
+            </a>
           </div>
           <div className="flex items-center space-x-2">
             <Linkedin className="w-4 h-4" />
-            <span>{personalInfo.linkedin}</span>
+            <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-blue-200 underline">
+              {personalInfo.linkedin}
+            </a>
           </div>
         </div>
       </div>
@@ -264,7 +473,29 @@ const ResumeApp: React.FC = () => {
             {job.responsibilities.map((responsibility, idx) => (
               <li key={idx} className="text-gray-700 flex items-start">
                 <span className="text-blue-600 mr-2">•</span>
-                {responsibility}
+                {typeof responsibility === 'string' ? (
+                  <span>{responsibility}</span>
+                ) : (
+                  <span>
+                    {responsibility.text.split(/(HeartSync|LifelongLearners|JobDone|IU International University|Holberton School|University of the People|Explore AI)/).map((part, partIdx) => {
+                      const link = responsibility.links?.find(link => link.text === part);
+                      if (link) {
+                        return (
+                          <a
+                            key={partIdx}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 underline"
+                          >
+                            {part}
+                          </a>
+                        );
+                      }
+                      return part;
+                    })}
+                  </span>
+                )}
               </li>
             ))}
           </ul>
@@ -280,7 +511,20 @@ const ResumeApp: React.FC = () => {
           <div className="flex justify-between items-start mb-4">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">{edu.degree}</h3>
-              <p className="text-blue-600 font-medium">{edu.institution}</p>
+              <p className="text-blue-600 font-medium">
+                {edu.institutionUrl ? (
+                  <a
+                    href={edu.institutionUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-blue-800 underline"
+                  >
+                    {edu.institution}
+                  </a>
+                ) : (
+                  edu.institution
+                )}
+              </p>
               <p className="text-gray-600 text-sm">{edu.location}</p>
             </div>
             <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded">
@@ -330,7 +574,20 @@ const ResumeApp: React.FC = () => {
     <div className="space-y-6">
       {projects.map((project, index) => (
         <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">{project.name}</h3>
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 underline text-sm"
+              >
+                <Github className="w-4 h-4" />
+                <span>View on GitHub</span>
+              </a>
+            )}
+          </div>
           <p className="text-gray-700 mb-4">{project.description}</p>
           
           <div className="mb-4">
@@ -373,11 +630,15 @@ const ResumeApp: React.FC = () => {
   return (
     <div className="h-full flex">
       {/* Sidebar */}
-      <div className="w-64 bg-gray-50 border-r border-gray-200 p-4">
+      <div className="w-64 bg-gray-50 border-r border-gray-200 p-4 sidebar">
         <div className="mb-6">
-          <button className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
+          <button 
+            onClick={generatePDF}
+            disabled={isGeneratingPDF}
+            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             <Download className="w-4 h-4" />
-            <span>Download PDF</span>
+            <span>{isGeneratingPDF ? 'Generating PDF...' : 'Download PDF'}</span>
           </button>
         </div>
         
@@ -400,7 +661,7 @@ const ResumeApp: React.FC = () => {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-6" ref={resumeRef}>
         {renderContent()}
       </div>
     </div>

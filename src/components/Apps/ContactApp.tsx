@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Mail, 
   Phone, 
@@ -10,6 +10,7 @@ import {
   User,
   MessageCircle
 } from 'lucide-react';
+import { init, send } from '@emailjs/browser';
 
 const ContactApp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -18,17 +19,73 @@ const ContactApp: React.FC = () => {
     subject: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Initialize EmailJS
+  useEffect(() => {
+    init('jXx0U6ZBVXSarcJhw');
+    console.log('EmailJS initialized with key:', 'jXx0U6ZBVXSarcJhw');
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    // You could integrate with EmailJS or a backend API here
-    alert('Thank you for your message! I\'ll get back to you soon.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // EmailJS configuration
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_email: 'demerwdani@gmail.com' // Your email address
+      };
+
+      console.log('Sending email with params:', templateParams);
+      console.log('Service ID:', 'service_ihy7k8b');
+      console.log('Template ID:', 'template_azae07n');
+
+      // Send email using EmailJS
+      const result = await send(
+        'service_ihy7k8b',
+        'template_azae07n', // Contact Us template
+        templateParams
+      );
+
+      console.log('Email sent successfully:', result);
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      alert('Thank you for your message! I\'ll get back to you soon.');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      console.error('Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : 'No stack trace'
+      });
+      setSubmitStatus('error');
+      
+      // Fallback: Show contact information
+      const fallbackMessage = `Thank you for your message! Since there was a technical issue, please contact me directly:
+
+Email: demerwdani@gmail.com
+Phone: +251967287536
+LinkedIn: https://linkedin.com/in/daniel-demerw
+
+Your message details:
+Name: ${formData.name}
+Email: ${formData.email}
+Subject: ${formData.subject}
+Message: ${formData.message}`;
+      
+      alert(fallbackMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -39,14 +96,14 @@ const ContactApp: React.FC = () => {
     {
       icon: <Mail className="w-5 h-5" />,
       label: 'Email',
-      value: 'joseph@example.com',
-      link: 'mailto:joseph@example.com'
+      value: 'demerwdani@gmail.com',
+      link: 'mailto:demerwdani@gmail.com'
     },
     {
       icon: <Phone className="w-5 h-5" />,
       label: 'Phone',
-      value: '+251-xxx-xxx-xxx',
-      link: 'tel:+251xxxxxxxxx'
+      value: '+251967287536',
+      link: 'tel:+251967287536'
     },
     {
       icon: <MapPin className="w-5 h-5" />,
@@ -57,20 +114,20 @@ const ContactApp: React.FC = () => {
     {
       icon: <Github className="w-5 h-5" />,
       label: 'GitHub',
-      value: 'github.com/josephdemerw',
-      link: 'https://github.com/josephdemerw'
+      value: 'github.com/sheshbazzarr',
+      link: 'https://github.com/sheshbazzarr'
     },
     {
       icon: <Linkedin className="w-5 h-5" />,
       label: 'LinkedIn',
-      value: 'linkedin.com/in/josephdemerw',
-      link: 'https://linkedin.com/in/josephdemerw'
+      value: 'linkedin.com/in/daniel-demerw',
+      link: 'https://linkedin.com/in/daniel-demerw'
     },
     {
       icon: <Globe className="w-5 h-5" />,
       label: 'Website',
-      value: 'josephdemerw.com',
-      link: 'https://josephdemerw.com'
+      value: 'beldados.vercel.app',
+      link: 'https://beldados.vercel.app'
     }
   ];
 
@@ -173,16 +230,21 @@ const ContactApp: React.FC = () => {
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
                   Subject
                 </label>
-                <input
-                  type="text"
+                <select
                   id="subject"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="What's this about?"
-                />
+                >
+                  <option value="">Select a subject...</option>
+                  <option value="Job Opportunity">Job Opportunity</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Networking">Networking</option>
+                  <option value="Project Collaboration">Project Collaboration</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
 
               <div>
@@ -203,10 +265,11 @@ const ContactApp: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 font-medium"
+                disabled={isSubmitting}
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-4 h-4" />
-                <span>Send Message</span>
+                <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
               </button>
             </form>
           </div>
