@@ -15,96 +15,65 @@ interface Photo {
 const PhotosApp: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
-
-  const photos: Photo[] = [
+  const [photos, setPhotos] = useState<Photo[]>([
     {
       id: '1',
-      title: 'Ethiopian Highland Sunrise',
-      description: 'The sun rises over the Simien Mountains, casting golden light across the ancient landscape.',
-      url: 'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      category: 'landscapes',
-      date: '2024-01-20',
+      title: 'Self Portrait',
+      description: 'A professional portrait capturing my authentic self - representing who I am as a person and developer.',
+      url: '/IMG_14903.jpeg',
+      category: 'personal',
+      date: '2024-12-26',
       likes: 42,
       views: 156
     },
     {
       id: '2',
-      title: 'Coffee Culture',
-      description: 'Traditional Ethiopian coffee ceremony - a beautiful cultural practice that brings communities together.',
-      url: 'https://images.pexels.com/photos/1695052/pexels-photo-1695052.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      category: 'culture',
-      date: '2024-01-18',
+      title: 'AI-Enhanced Portrait',
+      description: 'My portrait with AI artistic enhancement - showcasing the intersection of technology and creativity.',
+      url: '/Image.jpeg',
+      category: 'personal',
+      date: '2024-12-26',
       likes: 38,
       views: 124
     },
     {
       id: '3',
-      title: 'Rock-Hewn Churches',
-      description: 'The incredible architecture of Lalibela, carved directly from volcanic rock in the 12th century.',
-      url: 'https://images.pexels.com/photos/2382894/pexels-photo-2382894.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      category: 'architecture',
-      date: '2024-01-15',
+      title: 'Lifelong Learning Spirit',
+      description: 'AI-generated artwork representing the spirit of lifelong learning - continuous growth, curiosity, and the pursuit of knowledge.',
+      url: '/photo_2024-12-26_12-17-47.jpg',
+      category: 'personal',
+      date: '2024-12-26',
       likes: 67,
       views: 203
-    },
-    {
-      id: '4',
-      title: 'Digital Workspace',
-      description: 'My setup for coding and creative work - where technology meets inspiration.',
-      url: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      category: 'tech',
-      date: '2024-01-12',
-      likes: 29,
-      views: 89
-    },
-    {
-      id: '5',
-      title: 'Ancient Manuscripts',
-      description: 'Centuries-old Ge\'ez manuscripts preserving Ethiopia\'s rich literary and religious heritage.',
-      url: 'https://images.pexels.com/photos/1029141/pexels-photo-1029141.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      category: 'culture',
-      date: '2024-01-10',
-      likes: 51,
-      views: 178
-    },
-    {
-      id: '6',
-      title: 'Mountain Meditation',
-      description: 'Finding peace and reflection in the quiet moments among Ethiopia\'s highlands.',
-      url: 'https://images.pexels.com/photos/1004584/pexels-photo-1004584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      category: 'landscapes',
-      date: '2024-01-08',
-      likes: 74,
-      views: 241
-    },
-    {
-      id: '7',
-      title: 'Code & Coffee',
-      description: 'Late night coding session with traditional Ethiopian coffee - fuel for creativity.',
-      url: 'https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      category: 'tech',
-      date: '2024-01-05',
-      likes: 33,
-      views: 112
-    },
-    {
-      id: '8',
-      title: 'Traditional Weaving',
-      description: 'Master weavers creating beautiful textiles using techniques passed down through generations.',
-      url: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      category: 'culture',
-      date: '2024-01-03',
-      likes: 45,
-      views: 167
     }
-  ];
+  ]);
+
+  // Function to increment views when photo is clicked
+  const handlePhotoClick = (photo: Photo) => {
+    setPhotos(prevPhotos => 
+      prevPhotos.map(p => 
+        p.id === photo.id 
+          ? { ...p, views: p.views + 1 }
+          : p
+      )
+    );
+    setSelectedPhoto(photo);
+  };
+
+  // Function to handle like
+  const handleLike = (photoId: string) => {
+    setPhotos(prevPhotos => 
+      prevPhotos.map(p => 
+        p.id === photoId 
+          ? { ...p, likes: p.likes + 1 }
+          : p
+      )
+    );
+  };
 
   const categories = [
     { id: 'all', label: 'All Photos', count: photos.length },
-    { id: 'landscapes', label: 'Landscapes', count: photos.filter(p => p.category === 'landscapes').length },
-    { id: 'culture', label: 'Culture', count: photos.filter(p => p.category === 'culture').length },
-    { id: 'architecture', label: 'Architecture', count: photos.filter(p => p.category === 'architecture').length },
-    { id: 'tech', label: 'Technology', count: photos.filter(p => p.category === 'tech').length },
+    { id: 'personal', label: 'Personal', count: photos.filter(p => p.category === 'personal').length },
   ];
 
   const filteredPhotos = selectedCategory === 'all' 
@@ -126,7 +95,10 @@ const PhotosApp: React.FC = () => {
             <button className="bg-black bg-opacity-50 text-white p-2 rounded-lg hover:bg-opacity-70 transition-all">
               <Download className="w-5 h-5" />
             </button>
-            <button className="bg-black bg-opacity-50 text-white p-2 rounded-lg hover:bg-opacity-70 transition-all">
+            <button 
+              onClick={() => selectedPhoto && handleLike(selectedPhoto.id)}
+              className="bg-black bg-opacity-50 text-white p-2 rounded-lg hover:bg-opacity-70 transition-all"
+            >
               <Heart className="w-5 h-5" />
             </button>
           </div>
@@ -136,6 +108,11 @@ const PhotosApp: React.FC = () => {
               src={selectedPhoto.url}
               alt={selectedPhoto.title}
               className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              style={{ 
+                maxHeight: '80vh',
+                maxWidth: '90vw',
+                objectFit: 'contain'
+              }}
             />
           </div>
 
@@ -166,7 +143,7 @@ const PhotosApp: React.FC = () => {
                 <h1 className="text-3xl font-bold text-gray-900">Photo Gallery</h1>
               </div>
               <p className="text-gray-600 text-lg">
-                A collection of moments capturing Ethiopia's beauty, culture, and my journey in technology
+                A collection of personal moments and memories from my journey
               </p>
             </div>
 
@@ -191,7 +168,7 @@ const PhotosApp: React.FC = () => {
                 <div
                   key={photo.id}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                  onClick={() => setSelectedPhoto(photo)}
+                  onClick={() => handlePhotoClick(photo)}
                 >
                   <div className="relative">
                     <img
