@@ -120,6 +120,32 @@ const ResumeApp: React.FC = () => {
       ]
     },
     {
+      degree: 'BSc in Software Engineering',
+      institution: 'Addis Ababa Institute of Technology (AAIT)',
+      institutionUrl: 'https://www.aau.edu.et/',
+      period: '2023 - 2024',
+      location: 'Addis Ababa, Ethiopia',
+      achievements: [
+        'Completed rigorous coursework in advanced mathematics and computational logic',
+        'Developed strong foundations in Object-Oriented Programming (OOP) and software design',
+        'Active member of the Ethiopian Space Science Society (ESSS), contributing to technical discussions',
+        'Consistently excelled in class performance with high academic standing'
+      ]
+    },
+    {
+      degree: 'Doctor of Medicine (MD)',
+      institution: 'ECUSTA Higher Learning Institute',
+      institutionUrl: 'https://ecusta-hli.edu.et/',
+      period: '2025 - 2031',
+      location: 'Addis Ababa, Ethiopia',
+      achievements: [
+        'Completed introductory basic medical science modules',
+        'Focusing on foundational clinical knowledge and human anatomy',
+        'Developing core competencies in healthcare ethics and patient care',
+        'Engaged in early-stage medical research and laboratory practicals'
+      ]
+    },
+    {
       degree: 'Bachelor of Science in Computer Science',
       institution: 'University of the People',
       institutionUrl: 'https://www.uopeople.edu/',
