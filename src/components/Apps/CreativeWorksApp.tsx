@@ -47,7 +47,7 @@ const PoemsApp: React.FC = () => {
       id: '2',
       title: 'ርቀት እንደ ፈውስ',
       type: 'philosophical',
-      description: 'A philosophical reflection on distance as healing, patience, and the power of truth in relationships.',
+      description: 'A philosophical reflection on distance as healing',
       dateCreated: '2024-12-26',
       inspiration: 'The understanding that some wounds heal through distance and time, and that truth and patience are essential for genuine reconciliation.',
       tags: ['amharic', 'philosophy', 'healing', 'patience', 'truth', 'relationships'],
@@ -65,20 +65,22 @@ const PoemsApp: React.FC = () => {
     },
     {
       id: '3',
-      title: 'Sample Poem 3',
+      title: 'አፈ ታሪክ ',
       type: 'spiritual',
-      description: 'A spiritual meditation on faith and purpose.',
-      dateCreated: '2024-12-26',
-      inspiration: 'Spiritual journey and faith experiences.',
-      tags: ['spiritual', 'faith', 'meditation'],
-      content: `Your third poem here
-With spiritual themes.
+      description: 'ነገር ግን፣ ሁለተኛው ምርጥ ጊዜ... እርሱም ዛሬ ነው!.',
+      dateCreated: '2025-7-233',
+      inspiration: 'ነገር ግን፣ ሁለተኛው ምርጥ ጊዜ... እርሱም ዛሬ ነው!',
+      tags: ['አፈታሪክ', 'ፈጠራ ', ''],
+      content: `በጥንቷ ቻይና፣ የሰማይ እንባ ካላያት ዓመታት ተቆጥረዋል። መሬት እንደ ተረሳ የገብስ ዳቦ ደርቃና ተሰንጥቃ፣ ለምነቷን ተነጥቃለች። የፀሐይ ብርሃን እንኳ የአቧራውን መጋረጃ ጥሶ ለማለፍ ሲታገል፣ ሰማዩ በጭጋጋማ ግራጫ ተውጧል። የሕዝቡ ገጽታ በረሃብ የከሳ፣ ልብሳቸው የአቧራን ቀለም ተላብሶ፣ ዓይኖቻቸው የተስፋ መቁረጥን ጥልቁን ያሳያሉ። ሁሉም በአንድነት ተሰብስበው፣ ተስፋቸውን ሰንቀው፣ መፍትሔን በጉጉት ይጠባበቃሉ።
+በዚህ ተስፋ በቆረጠ ሕዝብ መካከል፣ አንድ ሰው ብቻቸውን ለየት ብለው ይታያሉ። የሐር ልብሳቸው አዲስ እንደሆነ፣ ረዥምና ነጭ ጢማቸው በንጹሕ ቅቤ ተለስልሶና ተውቦ፣ በነፋሱ እንቅስቃሴ በስሱ ይርገበገባል። በእጃቸው የያዟት ትንሽ ችግኝ፣ በአረንጓዴነቷና በውሃ ጥጋቧ፣ በዙሪያዋ ካለው ድርቅ ጋር ፍጹም ትቃረናለች። እርሳቸው ከፍ ባለ ድንጋይ ላይ ቆመው፣ ሕዝቡን በረጋና በጥልቅ አስተውሎት ይቃኛሉ።
+ጉሮሯቸውን በስርዓት ከጠረጉ በኋላ፣ በዝግታ ግን ግልጽ በሆነ ድምፅ መናገር ጀመሩ፦ "የተከበራችሁ የአገሬ ልጆች፣ የአፈሬ አፈሮች፣ የሰማይና የምድር ልጆች ሆይ! ዛሬ የሺህ ዓመታትን ጥበብ ላካፍላችሁ መጥቻለሁ!"
+ሕዝቡ በድንገተኛ ተስፋ ተሞልቶ፣ በጉጉት ቀና ብሎ ተመለከታቸው። ምናልባት የዝናብን ምስጢር ይገልጡልናል፣ ወይም የሰማይን ቁጣ የሚያበርድ መፍትሔ ይጠቁሙናል ብለው በልባቸው ተመኙ።
+"ወዳጆቼ..." አሉ በእርጋታ፣ "...ዛፍ ለመትከል ከሁሉ የተሻለው ጊዜ... ከአስር  ዓመት በፊት ነበር!!!"
+ለቅጽበት፣ በሕዝቡ መካከል ፍጹም ጸጥታ ሰፈነ። ግራ መጋባትና ጥርጣሬ በፊታቸው ላይ ሲነበብ፣ እርስ በርስ መተያየት ጀመሩ። ከሕዝቡ መካከል አንድ ጎስቋላ ሽማግሌ፣ ከጎኑ ላለው ሰው በሹክሹክታ፣ "ምን እያሉ ነው? ምርጡ ጊዜ ማለፉን ሊነግሩን ነው እዚህ የሰበሰቡን? ተስፋ ቁረጡ ማለታቸው ነው?" ሲል ጠየቀ።
+ታላቁ ጠቢብ፣ ኮንፊሽየስ ግን ገና ንግግራቸውን አልጨረሱም ነበር። ችግኟን የያዘችውን እጃቸውን ወደ ሰማይ ዘርግተው፣ በልበ ሙሉነትና በስል  ድምፅ ቀጠሉ... "ነገር ግን፣ ሁለተኛው ምርጥ ጊዜ... እርሱም ዛሬ ነው!"
 
-You can write about
-Faith, purpose, and meaning.
-
-The format preserves
-Your poetic structure.`
+#ወቀልድዘመሳቅተረትፈጠራዘአመጣጥ 
+@Iamlifelonglearner`
     }
   ];
 
