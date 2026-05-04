@@ -114,8 +114,8 @@ Message: ${formData.message}`;
     {
       icon: <Github className="w-5 h-5" />,
       label: 'GitHub',
-      value: 'github.com/sheshbazzarr',
-      link: 'https://github.com/sheshbazzarr'
+      value: 'github.com/beldados',
+      link: 'https://github.com/beldados'
     },
     {
       icon: <Linkedin className="w-5 h-5" />,
@@ -127,7 +127,7 @@ Message: ${formData.message}`;
       icon: <Globe className="w-5 h-5" />,
       label: 'Website',
       value: 'beldados.vercel.app',
-      link: 'https://beldados.vercel.app'
+      link: 'https://beldados.com'
     }
   ];
 
